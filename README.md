@@ -2,9 +2,6 @@
 
 A Prometheus exporter that captures and exposes exit codes from stopped Docker containers. This exporter is designed to work seamlessly with Docker Swarm and provides metrics with the same label format as cAdvisor for easy integration with existing monitoring setups.
 
-![License](https://img.shields.io/github/license/romroux/docker-exit-exporter)
-![Docker Pulls](https://img.shields.io/docker/pulls/romroux/docker-exit-exporter)
-
 ## Features
 
 - Captures exit codes from terminated Docker containers
