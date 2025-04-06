@@ -11,6 +11,15 @@ A Prometheus exporter that captures and exposes exit codes from stopped Docker c
 - Secure non-root execution
 - Automatic Docker socket permission handling
 
+## Docker Image
+
+This exporter is publicly available as a Docker image:
+
+```bash
+# Pull from GitHub Container Registry
+docker pull ghcr.io/romroux/docker-exit-exporter:latest
+```
+
 ## Installation
 
 ### Using Docker
@@ -19,7 +28,7 @@ A Prometheus exporter that captures and exposes exit codes from stopped Docker c
 docker run -d --name docker-exit-exporter \
   -p 9090:9090 \
   -v /var/run/docker.sock:/var/run/docker.sock:ro \
-  ghcr.io/username/docker-exit-exporter:latest
+  ghcr.io/romroux/docker-exit-exporter:latest
 ```
 
 ### Using Docker Compose
@@ -29,7 +38,7 @@ version: '3.8'
 
 services:
   docker-exit-exporter:
-    image: ghcr.io/username/docker-exit-exporter:latest
+    image: ghcr.io/romroux/docker-exit-exporter:latest
     ports:
       - "9090:9090"
     volumes:
@@ -82,7 +91,7 @@ count by(container_label_com_docker_swarm_service_name) (container_exit_code > 0
 
 ```bash
 # Clone the repository
-git clone https://github.com/username/docker-exit-exporter.git
+git clone https://github.com/romroux/docker-exit-exporter.git
 cd docker-exit-exporter
 
 # Build the Docker image

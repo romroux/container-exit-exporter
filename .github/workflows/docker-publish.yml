@@ -48,3 +48,14 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Make package public
+        if: github.event_name != 'pull_request'
+        run: |
+          echo "Making package public..."
+          PACKAGE_NAME="${GITHUB_REPOSITORY,,}"  # Convert to lowercase
+          gh api --method PATCH /user/packages/container/$PACKAGE_NAME/visibility \
+            -f visibility="public" \
+            -H "Accept: application/vnd.github+json"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
