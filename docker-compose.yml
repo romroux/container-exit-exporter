@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  # Main application (Docker exit code exporter)
+  docker-exit-exporter:
+    image: ghcr.io/romroux/docker-exit-exporter:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        EXPORTER_PORT: ${EXPORTER_PORT:-9090}
+    ports:
+      - "${EXPORTER_PORT:-9090}:${EXPORTER_PORT:-9090}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - COLLECTION_INTERVAL=${COLLECTION_INTERVAL:-15}
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${EXPORTER_PORT:-9090}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
