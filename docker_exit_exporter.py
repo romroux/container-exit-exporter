@@ -106,11 +106,13 @@ def collect_metrics():
                 # Get basic information
                 container_id = f"/docker/{container.id}"
                 name = details.get('Name', '').lstrip('/')
-                image = container.image.tags[0] if container.image.tags else container.image.id
-
-                # If the image contains a SHA256, keep it intact
-                if '@sha256:' in image:
-                    image = image
+                
+                # Get image reference from inspect data
+                image_ref = details.get('Config', {}).get('Image', '')
+                image_id = details.get('Image', '')
+                
+                # Prefer tag/reference if available, else fallback to image id
+                image = image_ref if image_ref else image_id
 
                 # Get Docker labels and convert to cAdvisor format
                 container_labels = details.get('Config', {}).get('Labels', {})
